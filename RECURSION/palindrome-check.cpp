@@ -12,7 +12,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool check(string s, int l, int r){
+bool check_palindrome(string s, int l, int r){
     
     if(l >= r) return true;
 
