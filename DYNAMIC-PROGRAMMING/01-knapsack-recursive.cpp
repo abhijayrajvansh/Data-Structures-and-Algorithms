@@ -16,6 +16,8 @@ constexpr char nl = '\n';
 include  (max)   exclude
 */
 
+int dp[100][100]; // dp[n][m] -> n = maximum constraints, m = maximum constraints
+
 int knapsack(vector<int64_t> &wt, vector<int64_t> &val,  int capacity, int n){
 
     // Base Condition
@@ -23,15 +25,20 @@ int knapsack(vector<int64_t> &wt, vector<int64_t> &val,  int capacity, int n){
         return 0;
     }
 
+    //Before every choice
+    if(dp[n][capacity] != -1){
+        return dp[n][capacity];
+    }
+
     // Choice Diagram
     int include = val[n - 1] + knapsack(wt, val, capacity - wt[n - 1], n - 1);
     int exclude = knapsack(wt, val, capacity, n - 1);
 
     if(wt[n - 1] <= capacity){
-        return max(include, exclude);
+        return dp[n][capacity] = max(include, exclude);
     }
     else{
-        return exclude;
+        return dp[n][capacity] = exclude;
     }
 }
 
@@ -41,9 +48,9 @@ int main (){
     int capacity = 50;
 
     int n = wt.size();
+    // after initializing dp array:
+    memset(dp, -1, sizeof(dp)); // Filling all values dp[n][m] with -1
 
     cout << knapsack(wt, val, capacity, n) << '\n';
-
-    cerr << fixed << setprecision(2); cerr << "\nExecution Time: " << (float)clock() / CLOCKS_PER_SEC << " secs" << '\n'; 
     return 0;    
 }
